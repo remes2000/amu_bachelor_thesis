@@ -1,0 +1,37 @@
+{% extends 'amu_bachelor_thesis_app/base.html' %}
+
+{% block title %}Edycja tematu{% endblock %}
+
+{% block content %}
+    <h2 class="title">Edycja tematu</h2>
+    <form method="post" action="{{ thesis.id }}">
+        {% csrf_token %}
+        <div class="field is-vertical">
+            <div class="field-label is-normal has-text-left">
+                <label class="label" for="thesis_title">Tytuł pracy</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p class="control">
+                        <input type="text" class="input" name="thesis_title" id="thesis_title" value="{{ thesis.title }}" required />
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="field is-vertical">
+            <div class="field-label is-normal has-text-left">
+                <label class="label" for="thesis_description">Opis pracy</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p class="control">
+                        <textarea class="textarea" name="thesis_description" id="thesis_description" rows="10">{{ thesis.description }}</textarea>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <button class="button is-primary" type="submit">
+            Zapisz
+        </button>
+    </form>
+{% endblock %}

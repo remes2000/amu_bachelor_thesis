@@ -1,0 +1,54 @@
+{% extends 'amu_bachelor_thesis_app/base.html' %}
+
+{% block title %}{{ thesis.title }}{% endblock %}
+
+{% block content %}
+    <h2 class="title mb-1">{{ thesis.title }}</h2>
+    <table class="mb-3">
+        <tr>
+            <td><span class="pr-3">Prowadzący:</span></td>
+            <td>
+                <a href="{% url 'amu_bachelor_thesis:lecturer_profile' thesis.lecturer_id %}">{{ thesis.lecturer.name_with_degree }}</a>
+            </td>
+        </tr>
+        {% if thesis.student %}
+            <tr>
+                <td><span class="pr-3">Student:</span></td>
+                <td>
+                    <a href="{% url 'amu_bachelor_thesis:student_profile' thesis.student_id %}">{{ thesis.student }}</a>
+                </td>
+            </tr>
+        {% endif %}
+    </table>
+
+    {% if thesis.student %}
+        <div class="notification is-info">
+            Ten temat jest już zajęty.
+        </div>
+    {% else %}
+        <div class="notification is-success">
+            Ten temat nie został jeszcze wybrany przez żadnego studenta.
+        </div>
+    {% endif %}
+
+    {% if user.is_student and not user.student.has_thesis and thesis.student_id is None %}
+        <button class="button is-primary modal__student_confirm_thesis_select mt-1 mb-1" data-thesis-id="{{ thesis.id }}">
+            Wybierz ten temat
+        </button>
+    {% endif %}
+    {% if user.is_student and user.student.has_thesis and user.student.thesis.id == thesis.id %}
+        <button class="button is-danger modal__student_confirm_thesis_unselect mt-1 mb-1" data-thesis-id="{{ thesis.id }}">
+            Porzuć ten temat
+        </button>
+    {% endif %}
+    <hr>
+
+    <div class="mt-2">
+        <h3 class="subtitle">Opis projektu:</h3>
+        {% if thesis.description %}
+            <p>{{ thesis.description }}</p>
+        {% else %}
+            <p>Brak opisu tematu pracy.</p>
+        {% endif %}
+    </div>
+{% endblock %}

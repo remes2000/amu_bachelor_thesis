@@ -1,0 +1,13 @@
+{% extends 'amu_bachelor_thesis_app/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+      Hi {{ user.username }}!
+        <a href="{% url 'amu_bachelor_thesis:logout' %}">Log Out</a>
+    {% else %}
+        <p>You are not logged in</p>
+        <a href="{% url 'amu_bachelor_thesis:login' %}">Log in</a>
+    {% endif %}
+{% endblock %}

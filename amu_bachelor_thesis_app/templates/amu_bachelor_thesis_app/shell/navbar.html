@@ -1,0 +1,50 @@
+<nav class="navbar" role="navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="{% url 'amu_bachelor_thesis:home' %}">
+            <h1>AMU Bachelor Thesis</h1>
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+        </a>
+    </div>
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" href="{% url 'amu_bachelor_thesis:search_engine' %}">Wyszukiwarka tematów</a>
+            {% if user.is_student %}
+                <a class="navbar-item" href="#">Lista prowadzących</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="navbar-end">
+        <div class="navbar-end">
+            <div class="navbar-item">
+                {% if user.is_authenticated %}
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">{{ user }}</a>
+                        <div class="navbar-dropdown is-right">
+                            {% if user.is_student %}
+                                <a class="navbar-item" href="{% url 'amu_bachelor_thesis:student_profile' user.id %}">Profil</a>
+                            {% elif user.is_lecturer %}
+                                <a class="navbar-item" href="{% url 'amu_bachelor_thesis:lecturer_profile' user.id %}">Profil</a>
+                                <a class="navbar-item" href="{% url 'amu_bachelor_thesis:manage_thesis' %}">Zarządzanie tematami</a>
+                            {% endif %}
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="{% url 'amu_bachelor_thesis:logout' %}">
+                                Wyloguj się
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="buttons">
+                        <a class="button is-primary" href="{% url 'amu_bachelor_thesis:login' %}">
+                            Zaloguj się
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

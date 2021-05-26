@@ -1,0 +1,40 @@
+{% extends 'amu_bachelor_thesis_app/base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <div class="login-form-container">
+        <h2 class="title has-text-centered">Zaloguj się</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="field is-vertical">
+                <div class="field-label is-normal has-text-left">
+                    <label class="label" for="{{ form.username.id_for_label }}">Email</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <p class="control">
+                            <input type="text" class="input" name="username" id="{{ form.username.id_for_label }}">
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="field is-vertical">
+                <div class="field-label is-normal has-text-left">
+                    <label class="label" for="{{ form.password.id_for_label }}">Hasło</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <p class="control">
+                            <input type="password" class="input" name="password" id="{{ form.password.id_for_label }}">
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <button class="button is-primary" type="submit">
+                Zaloguj
+            </button>
+        </div>
+    </form>
+{% endblock %}

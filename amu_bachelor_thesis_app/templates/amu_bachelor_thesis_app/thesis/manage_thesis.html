@@ -1,0 +1,33 @@
+{% extends 'amu_bachelor_thesis_app/base.html' %}
+
+{% block title %}Zarządzanie tematami{% endblock %}
+
+{% block content %}
+    <h2 class="title">Zarządzanie tematami</h2>
+    <a href="{% url 'amu_bachelor_thesis:create_thesis' %}" class="button is-primary">Dodaj nowy temat</a>
+    <table class="table is-fullwidth">
+        <thead>
+            <tr>
+                <th>Tytuł</th>
+                <th>Data edycji</th>
+                <th>Data dodania</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for thesis in page_obj %}
+                <tr>
+                    <td>{{ thesis.title }}</td>
+                    <td>{{ thesis.edited_at | date:'Y-m-d H:i:s'}}</td>
+                    <td>{{ thesis.created_at | date:'Y-m-d H:i:s'}}</td>
+                    <td class="has-text-right">
+                        <a href="#" class="button is-danger">Usuń</a>
+                        <a href="{% url 'amu_bachelor_thesis:edit_thesis' thesis.id %}" class="button is-info">Edytuj</a>
+                        <a href="{% url 'amu_bachelor_thesis:thesis' thesis.id %}" class="button is-primary">Przejdź</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% include 'amu_bachelor_thesis_app/shell/pagination.html' %}
+{% endblock %}

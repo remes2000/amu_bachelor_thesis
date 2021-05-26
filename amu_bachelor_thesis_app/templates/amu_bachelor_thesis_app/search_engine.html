@@ -1,0 +1,65 @@
+{% extends 'amu_bachelor_thesis_app/base.html' %}
+
+{% block title %}Wyszukiwarka tematów{% endblock %}
+
+{% block content %}
+    <h2 class="title">Wyszukiwarka tematów</h2>
+    <form method="get">
+        <div class="field is-grouped">
+            <p class="control is-expanded">
+                <label class="label">Temat pracy</label>
+                <input class="input" type="text" name="thesis_title" value="{{ request.GET.thesis_title }}">
+            </p>
+            <p class="control is-expanded">
+                <label class="label">Prowadzący</label>
+                <input class="input" type="text" name="thesis_lecturer" value="{{ request.GET.thesis_lecturer }}">
+            </p>
+            <p class="control is-align-self-flex-end">
+                <button class="button is-info" type="submit">
+                    Szukaj
+                </button>
+            </p>
+        </div>
+        <div class="field">
+            <label class="checkbox">
+                <input type="checkbox" name="include_already_selected" {% if request.GET.include_already_selected %}checked{% endif %}>
+                    Uwzględniaj już zajęte tematy
+            </label>
+        </div>
+    </form>
+    {% if page_obj %}
+        <table class="table is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Temat</th>
+                    <th>Prowadzący</th>
+                    <th>Student</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for thesis in page_obj %}
+                    <tr>
+                        <td>{{ thesis.title }}</td>
+                        <td>{{ thesis.lecturer.name_with_degree }}</td>
+                        <td>
+                            {% if thesis.student %}
+                                {{ thesis.student }}
+                            {% endif %}
+                        </td>
+                        <td class="has-text-right">
+                            <a href={% url 'amu_bachelor_thesis:thesis' thesis.id %} class="button is-primary">
+                                Przejdź
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% include 'amu_bachelor_thesis_app/shell/pagination.html' %}
+    {% else %}
+        <div class="has-text-centered mt-4 mb-4">
+            Brak pasujących rekordów :(
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,23 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'amu_bachelor_thesis_app/bulma/css/bulma.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'amu_bachelor_thesis_app/custom.css' %}"
+    </head>
+    <body>
+        {% include 'amu_bachelor_thesis_app/shell/navbar.html' %}
+        <div class="container mt-4">
+            <main>
+                {% block content %}
+                {% endblock %}
+            </main>
+            {% include 'amu_bachelor_thesis_app/shell/footer.html' %}
+        </div>
+        <script src="{% static 'amu_bachelor_thesis_app/scripts/bulma.js' %}"></script>
+        <script src="{% static 'amu_bachelor_thesis_app/scripts/modals.js' %}"></script>
+    </body>
+</html>

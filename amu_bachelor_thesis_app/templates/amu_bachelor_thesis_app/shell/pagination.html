@@ -1,0 +1,18 @@
+{% load pagination %}
+<hr>
+<nav class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="?{% url_replace page=page_obj.previous_page_number %}" class="pagination-previous">&lt;&lt; Poprzednia strona</a>
+    {% else %}
+        <a disabled class="pagination-previous">&lt;&lt; Poprzednia strona</a>
+    {% endif %}
+    {% if page_obj.has_next %}
+        <a href="?{% url_replace page=page_obj.next_page_number %}" class="pagination-next">Następna strona &gt;&gt;</a>
+    {% else %}
+        <a disabled class="pagination-next">Następna strona &gt;&gt;</a>
+    {% endif %}
+
+    <div class="pagination-list">
+      Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}
+    </div>
+</nav>
