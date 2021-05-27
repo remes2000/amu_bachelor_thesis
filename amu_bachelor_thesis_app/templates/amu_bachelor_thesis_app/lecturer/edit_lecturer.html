@@ -1,0 +1,49 @@
+{% extends 'amu_bachelor_thesis_app/base.html' %}
+
+{% block title %}Edycja profilu{% endblock %}
+
+{% block content %}
+    <h2 class="title">Edycja profilu</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="field is-vertical">
+            <div class="field-label is-normal has-text-left">
+                <label class="label" for="lecturer_degree">Tytuł naukowy</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p class="control">
+                        <input type="text" class="input" name="lecturer_degree" id="lecturer_degree" value="{{ lecturer.degree }}" />
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="field is-vertical">
+            <div class="field-label is-normal has-text-left">
+                <label class="label" for="lecturer_description">Informacje dodatkowe</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p class="control">
+                        <textarea class="textarea" name="lecturer_description" id="lecturer_description" rows="10">{{ lecturer.description }}</textarea>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="field is-vertical">
+            <div class="field-label is-normal has-text-left">
+                <label class="label" for="lecturer_interests">Zainteresowania</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p class="control">
+                        <textarea class="textarea" name="lecturer_interests" id="lecturer_interests" rows="10">{{ lecturer.interests }}</textarea>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <button class="button is-primary" type="submit">
+            Zapisz
+        </button>
+    </form>
+{% endblock %}

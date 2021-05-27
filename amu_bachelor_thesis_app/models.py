@@ -1,6 +1,7 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser, AbstractBaseUser, PermissionsMixin
 from django.db import models
+from django.utils import timezone
 
 
 class CustomUserManager(BaseUserManager):
@@ -89,7 +90,16 @@ class Student(models.Model):
         return self.first_name + ' ' + self.last_name
 
     def has_thesis(self):
-        return self.thesis is not None
+        try:
+            return self.thesis is not None
+        except AttributeError:
+            return False
+
+    def discard_all_propositions(self):
+        propositions_to_discard = ThesisProposition.objects.filter(student_id=self.user_id, is_active=True)
+        for proposition in propositions_to_discard:
+            proposition.is_active = False
+            proposition.save()
 
 
 class Thesis(models.Model):
@@ -102,3 +112,19 @@ class Thesis(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class ThesisProposition(models.Model):
+    title = models.CharField(max_length=255, blank=False, null=False)
+    description = models.CharField(max_length=4000, blank=True, null=True)
+    created_at = models.DateTimeField(null=False)
+    edited_at = models.DateTimeField(null=True)
+    lecturer = models.ForeignKey(Lecturer, on_delete=models.CASCADE, null=False)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, null=False)
+    is_active = models.BooleanField(null=False)
+
+    def __str__(self):
+        return self.title
+
+    def get_thesis(self):
+        return Thesis(title=self.title, description=self.description, created_at=timezone.now(), lecturer=self.lecturer, student=self.student)

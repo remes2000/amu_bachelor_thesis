@@ -1,0 +1,48 @@
+{% extends 'amu_bachelor_thesis_app/base.html' %}
+{% load lecturer %}
+
+{% block title %}{{ lecturer }}{% endblock %}
+
+{% block content %}
+    <h2 class="title">{{ lecturer.name_with_degree }}</h2>
+    {% if user.is_lecturer and user.lecturer.id == lecturer.id %}
+        <a class="button is-button is-primary" href="{% url 'amu_bachelor_thesis:edit_lecturer' lecturer.user_id %}">
+            Edytuj profil
+        </a>
+    {% endif %}
+    <section class="mt-4">
+        <h3 class="subtitle">Podsumowanie</h3>
+        <table>
+            <tr>
+                <td>Zaproponowanych tematów:</td>
+                <td>
+                    <b class="pl-2">{% count_thesis lecturer %}</b>
+                </td>
+            </tr>
+            <tr>
+                <td>Wolnych: </td>
+                <td>
+                    <b class="pl-2">{% count_not_taken_thesis lecturer %}</b>
+                </td>
+            </tr>
+            <tr>
+                <td>Zajętych: </td>
+                <td>
+                    <b class="pl-2">{% count_taken_thesis lecturer %}</b>
+                </td>
+            </tr>
+        </table>
+    </section>
+    <section class="mt-6">
+        <h3 class="subtitle">Kontakt</h3>
+        <p>{{ lecturer.user.email }}</p>
+    </section>
+    <section class="mt-6">
+        <h3 class="subtitle">Dodatkowe informacje</h3>
+        <p>{{ lecturer.description }}</p>
+    </section>
+    <section class="mt-6">
+        <h3 class="subtitle">Zainteresowania</h3>
+        <p>{{ lecturer.interests }}</p>
+    </section>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'amu_bachelor_thesis_app/base.html' %}
+{% load lecturer %}
+
+{% block title %}Dodawanie propozycji tematu{% endblock %}
+
+{% block content %}
+    <h2 class="title">Dodawanie propozycji tematu</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="field is-vertical">
+            <div class="field-label is-normal has-text-left">
+                <label class="label" for="thesis_proposition_lecturer_id">Prowadzący</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p class="control">
+                        <select class="input" name="thesis_proposition_lecturer_id" id="thesis_title" disabled>
+                            {% for lecturer in lecturers %}
+                                <option {% if lecturer.user_id == thesis_proposition.lecturer_id %}selected{% endif %}
+                                        value="{{ lecturer.user_id }}">{{ lecturer.name_with_degree }}</option>
+                            {% endfor %}
+                        </select>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="field is-vertical">
+            <div class="field-label is-normal has-text-left">
+                <label class="label" for="thesis_proposition_title">Tytuł pracy</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p class="control">
+                        <input type="text" class="input" name="thesis_proposition_title" id="thesis_proposition_title" required value="{{ thesis_proposition.title }}"/>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="field is-vertical">
+            <div class="field-label is-normal has-text-left">
+                <label class="label" for="thesis_proposition_description">Opis pracy</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p class="control">
+                        <textarea class="textarea" name="thesis_proposition_description" id="thesis_proposition_description" rows="10">{{ thesis_proposition.description }}</textarea>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <button class="button is-primary" type="submit">
+            Zapisz
+        </button>
+    </form>
+{% endblock %}

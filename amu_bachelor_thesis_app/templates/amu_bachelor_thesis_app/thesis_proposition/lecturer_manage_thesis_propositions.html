@@ -1,0 +1,31 @@
+{% extends 'amu_bachelor_thesis_app/base.html' %}
+{% load helpers %}
+
+{% block title %}Zarządzanie propozycjami studentów{% endblock %}
+
+{% block content %}
+    <h2 class="title">Zarządzanie propozycjami studentów</h2>
+    {% if students %}
+        {% for student in students %}
+            <section class="mt-2 mb-2">
+                <a href="{% url 'amu_bachelor_thesis:student_profile' student.user_id %}">
+                    <h3 class="subtitle">{{ student }}</h3>
+                </a>
+                <h4 class="subtitle is-6 mt-3">Propozycje:</h4>
+                <div class="content">
+                    {% get_value_from_dict thesis_propositions_dictionary student.user_id as thesis_propositions %}
+                    <ul>
+                        {% for thesis_proposition in thesis_propositions %}
+                            <li>
+                                <a href="{% url 'amu_bachelor_thesis:thesis_proposition' thesis_proposition.id %}">{{ thesis_proposition.title }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </section>
+            <hr>
+        {% endfor %}
+    {% else %}
+        <p>Brak propozycji do rozpatrzenia.</p>
+    {% endif %}
+{% endblock %}

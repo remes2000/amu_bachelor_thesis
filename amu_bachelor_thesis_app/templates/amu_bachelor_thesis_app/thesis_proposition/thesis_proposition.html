@@ -1,0 +1,41 @@
+{% extends 'amu_bachelor_thesis_app/base.html' %}
+
+{% block title %}Propozycja tematu - {{ thesis_proposition.title }}{% endblock %}
+
+{% block content %}
+    <h2 class="title mb-1">{{ thesis_proposition.title }}</h2>
+    <p>Propozycja tematu</p>
+    <table class="mb-3 mt-3">
+        <tr>
+            <td><span class="pr-3">Prowadzący:</span></td>
+            <td>
+                <a href="{% url 'amu_bachelor_thesis:lecturer_profile' thesis_proposition.lecturer_id %}">{{ thesis_proposition.lecturer.name_with_degree }}</a>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="pr-3">Student:</span></td>
+            <td>
+                <a href="{% url 'amu_bachelor_thesis:student_profile' thesis_proposition.student_id %}">{{ thesis_proposition.student }}</a>
+            </td>
+        </tr>
+    </table>
+
+    <div class="mt-2">
+        <h3 class="subtitle">Opis projektu:</h3>
+        {% if thesis_proposition.description %}
+            <p>{{ thesis_proposition.description }}</p>
+        {% else %}
+            <p>Brak opisu tematu pracy.</p>
+        {% endif %}
+    </div>
+
+    {% if thesis_proposition.lecturer_id == user.id %}
+        <hr>
+        <button class="button is-success modal__lecturer_confirm_thesis_proposition" data-thesis-proposition-id="{{ thesis_proposition.id }}">
+            Zaakceptuj
+        </button>
+        <button class="button is-danger modal__lecturer_discard_thesis_proposition" data-thesis-proposition-id="{{ thesis_proposition.id }}">
+            Odrzuć
+        </button>
+    {% endif %}
+{% endblock %}

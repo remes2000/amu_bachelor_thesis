@@ -4,7 +4,7 @@
 
 {% block content %}
     <h2 class="title">Edycja tematu</h2>
-    <form method="post" action="{{ thesis.id }}">
+    <form method="post">
         {% csrf_token %}
         <div class="field is-vertical">
             <div class="field-label is-normal has-text-left">
@@ -25,7 +25,7 @@
             <div class="field-body">
                 <div class="field">
                     <p class="control">
-                        <textarea class="textarea" name="thesis_description" id="thesis_description" rows="10">{{ thesis.description }}</textarea>
+                        <textarea class="textarea" name="thesis_description" id="thesis_description" rows="10">{% if thesis.description %}{{ thesis.description }}{% endif %}</textarea>
                     </p>
                 </div>
             </div>

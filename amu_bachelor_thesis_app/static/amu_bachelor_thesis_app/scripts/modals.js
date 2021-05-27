@@ -52,6 +52,135 @@ document.querySelectorAll('.modal__student_confirm_thesis_unselect').forEach(b =
     });
 });
 
+// LECTURER CONFIRM THESIS PROPOSITION
+document.querySelectorAll('.modal__lecturer_confirm_thesis_proposition').forEach(b => {
+    b.addEventListener('click', () => {
+        const thesisPropositionId = b.dataset.thesisPropositionId;
+        const template =`
+            <div class="modal is-active">
+                <div class="modal-background close-modal"></div>
+                <div class="modal-card">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">Akceptowanie propozycji tematu</p>
+                    </header>
+                    <section class="modal-card-body">
+                        Czy na pewno chcesz zaakceptować tą propozycję tematu pracy inżynierskiej?
+                    </section>
+                    <footer class="modal-card-foot">
+                        <button class="button is-success success">Tak</button>
+                        <button class="button close-modal">Anuluj</button>
+                    </footer>
+                </div>
+            </div>
+        `;
+        const successCallback = () => setLocation(['thesis_proposition', thesisPropositionId, 'accept']);
+        showModal(template, successCallback);
+    });
+});
+
+// LECTURER DISCARD THESIS PROPOSITION
+document.querySelectorAll('.modal__lecturer_discard_thesis_proposition').forEach(b => {
+    b.addEventListener('click', () => {
+        const thesisPropositionId = b.dataset.thesisPropositionId;
+        const template =`
+            <div class="modal is-active">
+                <div class="modal-background close-modal"></div>
+                <div class="modal-card">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">Odrzucanie propozycji tematu</p>
+                    </header>
+                    <section class="modal-card-body">
+                        Czu na pewno chcesz odrzucić tą propozycję tematu pracy inżynierskiej?
+                    </section>
+                    <footer class="modal-card-foot">
+                        <button class="button is-success success">Tak</button>
+                        <button class="button close-modal">Anuluj</button>
+                    </footer>
+                </div>
+            </div>
+        `;
+        const successCallback = () => setLocation(['thesis_proposition', thesisPropositionId, 'discard']);
+        showModal(template, successCallback);
+    });
+});
+
+//STUDENT DISCARD OWN THESIS PROPOSITION
+document.querySelectorAll('.modal__student_discard_own_thesis_proposition').forEach(b => {
+    b.addEventListener('click', () => {
+        const thesisPropositionId = b.dataset.thesisPropositionId;
+        const template =`
+            <div class="modal is-active">
+                <div class="modal-background close-modal"></div>
+                <div class="modal-card">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">Anulowanie propozycji tematu</p>
+                    </header>
+                    <section class="modal-card-body">
+                        Czu na pewno chcesz anulować tą propozycję tematu pracy inżynierskiej?
+                    </section>
+                    <footer class="modal-card-foot">
+                        <button class="button is-success success">Tak</button>
+                        <button class="button close-modal">Anuluj</button>
+                    </footer>
+                </div>
+            </div>
+        `;
+        const successCallback = () => setLocation(['thesis_proposition', thesisPropositionId, 'discard_own']);
+        showModal(template, successCallback);
+    });
+});
+
+//STUDENT RESEND THESIS PROPOSITION
+document.querySelectorAll('.modal__student_resend_thesis_proposition').forEach(b => {
+    b.addEventListener('click', () => {
+        const thesisPropositionId = b.dataset.thesisPropositionId;
+        const template =`
+            <div class="modal is-active">
+                <div class="modal-background close-modal"></div>
+                <div class="modal-card">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">Ponowne przesyłanie propozycji</p>
+                    </header>
+                    <section class="modal-card-body">
+                        Czu na pewno chcesz ponownie przesłać tą propozycję tematu pracy inżynierskiej?
+                    </section>
+                    <footer class="modal-card-foot">
+                        <button class="button is-success success">Tak</button>
+                        <button class="button close-modal">Anuluj</button>
+                    </footer>
+                </div>
+            </div>
+        `;
+        const successCallback = () => setLocation(['thesis_proposition', thesisPropositionId, 'resend']);
+        showModal(template, successCallback);
+    });
+});
+
+// LECTURER REMOVE THESIS
+document.querySelectorAll('.modal__lecturer_remove_thesis').forEach(b => {
+    b.addEventListener('click', () => {
+        const thesisId = b.dataset.thesisId;
+        const template =`
+            <div class="modal is-active">
+                <div class="modal-background close-modal"></div>
+                <div class="modal-card">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">Usuwanie tematu pracy</p>
+                    </header>
+                    <section class="modal-card-body">
+                        Czu na pewno chcesz usunąć ten temat pracy inżynierskiej?
+                    </section>
+                    <footer class="modal-card-foot">
+                        <button class="button is-success success">Tak</button>
+                        <button class="button close-modal">Anuluj</button>
+                    </footer>
+                </div>
+            </div>
+        `;
+        const successCallback = () => setLocation(['thesis', thesisId, 'remove']);
+        showModal(template, successCallback);
+    });
+});
 
 function showModal(template, successCallback) {
     const modalContainer = document.createElement('div');

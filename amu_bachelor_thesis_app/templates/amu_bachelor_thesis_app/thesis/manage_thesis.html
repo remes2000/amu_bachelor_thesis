@@ -21,7 +21,12 @@
                     <td>{{ thesis.edited_at | date:'Y-m-d H:i:s'}}</td>
                     <td>{{ thesis.created_at | date:'Y-m-d H:i:s'}}</td>
                     <td class="has-text-right">
-                        <a href="#" class="button is-danger">Usuń</a>
+                        <button
+                                {% if thesis.student_id %} disabled {% endif %}
+                                class="button is-danger modal__lecturer_remove_thesis"
+                                data-thesis-id="{{ thesis.id }}">
+                            Usuń
+                        </button>
                         <a href="{% url 'amu_bachelor_thesis:edit_thesis' thesis.id %}" class="button is-info">Edytuj</a>
                         <a href="{% url 'amu_bachelor_thesis:thesis' thesis.id %}" class="button is-primary">Przejdź</a>
                     </td>

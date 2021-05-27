@@ -1,0 +1,56 @@
+{% extends 'amu_bachelor_thesis_app/base.html' %}
+
+{% block title %}Zarządzanie propozycjami tematów{% endblock %}
+
+{% block content %}
+    <h2 class="title">Zarządzanie propozycjami tematów</h2>
+    {% if not user.student.has_thesis %}
+        <a href="{% url 'amu_bachelor_thesis:create_thesis_proposition' %}" class="button is-primary mb-2">Dodaj nową propozycję</a>
+    {% else %}
+        <button class="button is-primary mb-2" disabled>Dodaj nową propozycję</button>
+    {% endif %}
+    {% if page_obj %}
+        <table class="table is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Tytuł</th>
+                    <th>Data edycji</th>
+                    <th>Data dodania</th>
+                    <th>Prowadzący</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for thesis_proposition in page_obj %}
+                    <tr>
+                        <td>{{ thesis_proposition.title }}</td>
+                        <td>{{ thesis_proposition.edited_at | date:'Y-m-d H:i:s'}}</td>
+                        <td>{{ thesis_proposition.created_at | date:'Y-m-d H:i:s'}}</td>
+                        <td>{{ thesis_proposition.lecturer.name_with_degree }}</td>
+                        <td class="has-text-right">
+                            <a class="button is-info" href="{% url 'amu_bachelor_thesis:edit_thesis_proposition' thesis_proposition.id %}">
+                                Edytuj
+                            </a>
+                            {% if thesis_proposition.is_active %}
+                                <button class="button is-danger modal__student_discard_own_thesis_proposition" data-thesis-proposition-id="{{ thesis_proposition.id }}">
+                                    Anuluj
+                                </button>
+                            {% else %}
+                                <button class="button is-success modal__student_resend_thesis_proposition"
+                                        {% if user.student.has_thesis %} disabled {% endif %}
+                                        data-thesis-proposition-id="{{ thesis_proposition.id }}">
+                                    Wyślij ponownie
+                                </button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="has-text-centered mt-4 mb-4">
+            Brak pasujących rekordów :(
+        </div>
+    {% endif %}
+    {% include 'amu_bachelor_thesis_app/shell/pagination.html' %}
+{% endblock %}

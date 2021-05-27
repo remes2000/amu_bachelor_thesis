@@ -1,0 +1,18 @@
+{% extends 'amu_bachelor_thesis_app/base.html' %}
+
+{% block title %}{{ student }}{% endblock %}
+
+{% block content %}
+    <h2 class="title">{{ student }}</h2>
+    <p>
+        E-mail: <b>{{ student.user.email }}</b>
+    </p>
+    <p>
+        Numer albumu: <b>{{ student.album_number }}</b>
+    </p>
+    {% if student.has_thesis %}
+        <p>Wybrany temat: <a href="{% url 'amu_bachelor_thesis:thesis' student.thesis.id %}">{{ student.thesis.title }}</a> </p>
+    {% else %}
+        <p>Student nie wybrał jeszcze tematu pracy</p>
+    {% endif %}
+{% endblock %}
