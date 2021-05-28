@@ -1,0 +1,78 @@
+ <li class="notification">
+    {% if notification.type == notification.STUDENT_CREATED_PROPOSITION %}
+        <div class="notification-header">Student wprowadził nową propozycję tematu</div>
+            <div class="notification-content">
+                Student
+            {% include 'amu_bachelor_thesis_app/notification/notification-student-anchor.html' with notification=notification %}
+            wprowadził nową propozycję tematu
+            {% include 'amu_bachelor_thesis_app/notification/notification-thesis-proposition-anchor.html' with notification=notification %}
+        </div>
+     {% endif %}
+     {% if notification.type == notification.STUDENT_DISCARDED_PROPOSITION %}
+        <div class="notification-header">Student wycofał swoją propozycję tematu</div>
+        <div class="notification-content">
+            Student
+            {% include 'amu_bachelor_thesis_app/notification/notification-student-anchor.html' with notification=notification %}
+            wycofał swoją propozycję tematu
+            {% include 'amu_bachelor_thesis_app/notification/notification-thesis-proposition-anchor.html' with notification=notification %}
+        </div>
+     {% endif %}
+     {% if notification.type == notification.STUDENT_EDITED_PROPOSITION %}
+        <div class="notification-header">Student wprowadził zmiany w zaproponowanym temacie</div>
+        <div class="notification-content">
+            Student
+            {% include 'amu_bachelor_thesis_app/notification/notification-student-anchor.html' with notification=notification %}
+            wprowadził zmiany w swojej propozycji tematu
+            {% include 'amu_bachelor_thesis_app/notification/notification-thesis-proposition-anchor.html' with notification=notification %}
+        </div>
+     {% endif %}
+     {% if notification.type == notification.STUDENT_SELECTED_THESIS %}
+        <div class="notification-header">Student wybrał temat pracy</div>
+        <div class="notification-content">
+            Student
+            {% include 'amu_bachelor_thesis_app/notification/notification-student-anchor.html' with notification=notification %}
+            wybrał zaproponowany przez Ciebie temat pracy inżynierskiej
+            {% include 'amu_bachelor_thesis_app/notification/notification-thesis-anchor.html' with notification=notification %}
+        </div>
+     {% endif %}
+     {% if notification.type == notification.STUDENT_UNSELECTED_THESIS %}
+        <div class="notification-header">Student porzucił temat pracy</div>
+        <div class="notification-content">
+            Student
+            {% include 'amu_bachelor_thesis_app/notification/notification-student-anchor.html' with notification=notification %}
+            porzucił temat pracy
+            {% include 'amu_bachelor_thesis_app/notification/notification-thesis-anchor.html' with notification=notification %}
+            której byłeś promotorem
+        </div>
+     {% endif %}
+     {% if notification.type == notification.LECTURER_EDITED_THESIS %}
+        <div class="notification-header">Prowadzący wprowadził zmiany w temacie twojej pracy</div>
+        <div class="notification-content">
+            Prowadzący
+            {% include 'amu_bachelor_thesis_app/notification/notification-lecturer-anchor.html' with notification=notification %}
+            wprowadził zmiany w temacie twojej pracy inżynierskiej
+            {% include 'amu_bachelor_thesis_app/notification/notification-thesis-anchor.html' with notification=notification %}
+        </div>
+     {% endif %}
+     {% if notification.type == notification.LECTURER_ACCEPTED_PROPOSITION %}
+         <div class="notification-header">Prowadzący zaakceptował zaproponowany temat</div>
+         <div class="notification-content">
+            Prowadzący
+            {% include 'amu_bachelor_thesis_app/notification/notification-lecturer-anchor.html' with notification=notification %}
+            zaakceptował zaproponowany przez Ciebie temat, który stał się tematem twojej pracy inżynierskiej
+            {% include 'amu_bachelor_thesis_app/notification/notification-thesis-anchor.html' with notification=notification %}
+         </div>
+     {% endif %}
+     {% if notification.type == notification.LECTURER_DISCARDED_PROPOSITION %}
+         <div class="notification-header">Prowadzący odrzucił propozycję tematu</div>
+         <div class="notification-content">
+            Prowadzący
+            {% include 'amu_bachelor_thesis_app/notification/notification-lecturer-anchor.html' with notification=notification %}
+            odrzucił zaproponowany przez Ciebie temat
+            {% include 'amu_bachelor_thesis_app/notification/notification-thesis-anchor.html' with notification=notification %}
+         </div>
+     {% endif %}
+     <div class="notification-date">
+         {{ notification.date | date:'Y-m-d H:i:s' }}
+     </div>
+ </li>

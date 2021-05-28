@@ -128,3 +128,35 @@ class ThesisProposition(models.Model):
 
     def get_thesis(self):
         return Thesis(title=self.title, description=self.description, created_at=timezone.now(), lecturer=self.lecturer, student=self.student)
+
+
+class Notification(models.Model):
+    STUDENT_CREATED_PROPOSITION = 1
+    STUDENT_DISCARDED_PROPOSITION = 2
+    STUDENT_EDITED_PROPOSITION = 3
+    STUDENT_SELECTED_THESIS = 4
+    STUDENT_UNSELECTED_THESIS = 5
+    LECTURER_EDITED_THESIS = 51
+    LECTURER_ACCEPTED_PROPOSITION = 52
+    LECTURER_DISCARDED_PROPOSITION = 53
+
+    TYPE_CHOICES = (
+        (STUDENT_CREATED_PROPOSITION, 'STUDENT_CREATED_PROPOSITION'),
+        (STUDENT_DISCARDED_PROPOSITION, 'STUDENT_DISCARDED_PROPOSITION'),
+        (STUDENT_EDITED_PROPOSITION, 'STUDENT_EDITED_PROPOSITION'),
+        (STUDENT_SELECTED_THESIS, 'STUDENT_SELECTED_THESIS'),
+        (STUDENT_UNSELECTED_THESIS, 'STUDENT_UNSELECTED_THESIS'),
+        (LECTURER_EDITED_THESIS, 'LECTURER_EDITED_THESIS'),
+        (LECTURER_ACCEPTED_PROPOSITION, 'LECTURER_ACCEPTED_PROPOSITION'),
+        (LECTURER_DISCARDED_PROPOSITION, 'LECTURER_DISCARDED_PROPOSITION')
+    )
+
+    date = models.DateTimeField(null=False)
+    is_seen = models.BooleanField(null=False)
+    type = models.PositiveSmallIntegerField(choices=TYPE_CHOICES, blank=False, null=False)
+    thesis = models.ForeignKey(Thesis, on_delete=models.SET_NULL, null=True)
+    thesis_proposition = models.ForeignKey(ThesisProposition, on_delete=models.SET_NULL, null=True)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, null=True)
+    lecturer = models.ForeignKey(Lecturer, on_delete=models.CASCADE, null=True)
+    recipient = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+

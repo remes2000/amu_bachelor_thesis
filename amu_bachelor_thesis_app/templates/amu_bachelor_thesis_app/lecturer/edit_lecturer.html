@@ -25,7 +25,7 @@
             <div class="field-body">
                 <div class="field">
                     <p class="control">
-                        <textarea class="textarea" name="lecturer_description" id="lecturer_description" rows="10">{{ lecturer.description }}</textarea>
+                        <textarea class="textarea" name="lecturer_description" id="lecturer_description" rows="10">{% if lecturer.description %}{{ lecturer.description }}{% endif %}</textarea>
                     </p>
                 </div>
             </div>
@@ -37,7 +37,7 @@
             <div class="field-body">
                 <div class="field">
                     <p class="control">
-                        <textarea class="textarea" name="lecturer_interests" id="lecturer_interests" rows="10">{{ lecturer.interests }}</textarea>
+                        <textarea class="textarea" name="lecturer_interests" id="lecturer_interests" rows="10">{% if lecturer.interests %}{{ lecturer.interests }}{% endif %}</textarea>
                     </p>
                 </div>
             </div>

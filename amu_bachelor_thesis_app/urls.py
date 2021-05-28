@@ -28,4 +28,7 @@ urlpatterns = [
     path('thesis_proposition/create', views.create_thesis_proposition, name='create_thesis_proposition'),
     path('thesis_proposition/<int:thesis_proposition_id>/edit', views.edit_thesis_proposition, name='edit_thesis_proposition'),
     path('lecturer_manage_thesis_propositions', views.lecturer_manage_thesis_proposition, name='lecturer_manage_thesis_propositions'),
+    path('notifications', views.NotificationsView.as_view(), name='notifications'),
+    path('notifications/history', views.NotificationsHistoryView.as_view(), name='notifications_history'),
+    path('notifications_getcounter', views.notifications_get_counter, name='notifications_get_counter')
 ]

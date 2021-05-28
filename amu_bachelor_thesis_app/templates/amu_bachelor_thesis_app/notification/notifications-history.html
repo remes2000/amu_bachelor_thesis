@@ -1,0 +1,17 @@
+{% extends 'amu_bachelor_thesis_app/base.html' %}
+
+{% block title %}Historia powiadomień{% endblock %}
+
+{% block content %}
+    <h2 class="title mb-1">Historia powiadomień</h2>
+    {% if notifications %}
+        <ul class="notifications-list mt-3">
+            {% for notification in notifications %}
+                {% include 'amu_bachelor_thesis_app/notification/notification-list-item.html' with notification=notification %}
+            {% endfor %}
+        </ul>
+        {% include 'amu_bachelor_thesis_app/shell/pagination.html' %}
+    {% else %}
+        <p class="mt-2 mb-2">Brak powiadomień do wyświetlenia :(</p>
+    {% endif %}
+{% endblock %}

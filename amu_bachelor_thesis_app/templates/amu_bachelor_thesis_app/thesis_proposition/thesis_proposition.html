@@ -20,6 +20,19 @@
         </tr>
     </table>
 
+    {% if thesis_proposition.is_active %}
+        <div class="notification is-info">
+            Propozycja czeka na rozpatrzenie przez
+            <a href="{% url 'amu_bachelor_thesis:lecturer_profile' thesis_proposition.lecturer_id %}">
+                {{ thesis_proposition.lecturer.name_with_degree }}
+            </a>
+        </div>
+    {% else %}
+        <div class="notification is-info">
+            Propozycja została wycofana.
+        </div>
+    {% endif %}
+
     <div class="mt-2">
         <h3 class="subtitle">Opis projektu:</h3>
         {% if thesis_proposition.description %}
@@ -29,7 +42,7 @@
         {% endif %}
     </div>
 
-    {% if thesis_proposition.lecturer_id == user.id %}
+    {% if thesis_proposition.is_active and thesis_proposition.lecturer_id == user.id %}
         <hr>
         <button class="button is-success modal__lecturer_confirm_thesis_proposition" data-thesis-proposition-id="{{ thesis_proposition.id }}">
             Zaakceptuj

@@ -17,7 +17,7 @@
                     <th>Data edycji</th>
                     <th>Data dodania</th>
                     <th>Prowadzący</th>
-                    <th></th>
+                    <th class="manage_thesis_propositions_action_button_columns"></th>
                 </tr>
             </thead>
             <tbody>
@@ -33,7 +33,7 @@
                             </a>
                             {% if thesis_proposition.is_active %}
                                 <button class="button is-danger modal__student_discard_own_thesis_proposition" data-thesis-proposition-id="{{ thesis_proposition.id }}">
-                                    Anuluj
+                                    Wycofaj
                                 </button>
                             {% else %}
                                 <button class="button is-success modal__student_resend_thesis_proposition"
@@ -42,6 +42,9 @@
                                     Wyślij ponownie
                                 </button>
                             {% endif %}
+                            <a class="button is-primary" href="{% url 'amu_bachelor_thesis:thesis_proposition' thesis_proposition.id %}">
+                                Przejdź
+                            </a>
                         </td>
                     </tr>
                 {% endfor %}

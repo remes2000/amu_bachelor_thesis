@@ -43,7 +43,7 @@
             <div class="field-body">
                 <div class="field">
                     <p class="control">
-                        <textarea class="textarea" name="thesis_proposition_description" id="thesis_proposition_description" rows="10">{{ thesis_proposition.description }}</textarea>
+                        <textarea class="textarea" name="thesis_proposition_description" id="thesis_proposition_description" rows="10">{% if thesis_proposition.description %}{{ thesis_proposition.description }}{% endif %}</textarea>
                     </p>
                 </div>
             </div>

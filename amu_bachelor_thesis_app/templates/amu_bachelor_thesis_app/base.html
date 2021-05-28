@@ -19,5 +19,8 @@
         </div>
         <script src="{% static 'amu_bachelor_thesis_app/scripts/bulma.js' %}"></script>
         <script src="{% static 'amu_bachelor_thesis_app/scripts/modals.js' %}"></script>
+        {% if user.is_authenticated %}
+            <script src="{% static 'amu_bachelor_thesis_app/scripts/notifications.js' %}"></script>
+        {% endif %}
     </body>
 </html>

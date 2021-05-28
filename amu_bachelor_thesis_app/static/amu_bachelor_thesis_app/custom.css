@@ -6,3 +6,44 @@
     border-radius: 7px;
     box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
 }
+
+.manage_thesis_propositions_action_button_columns {
+    width: 350px;
+}
+
+.notification-dot {
+    border-radius: 50%;
+    background-color: #f14668;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    margin: 5px;
+}
+
+.notification-dot.small {
+    width: 22px;
+    height: 22px;
+}
+
+.notification-dot.big {
+    width: 30px;
+    height: 30px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.notification-header {
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.notification-date {
+    font-weight: bold;
+    margin-top: 15px;
+}

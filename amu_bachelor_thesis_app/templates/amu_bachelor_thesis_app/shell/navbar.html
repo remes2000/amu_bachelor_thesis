@@ -1,4 +1,5 @@
 {% load lecturer %}
+{% load helpers %}
 <nav class="navbar" role="navigation">
     <div class="navbar-brand">
         <a class="navbar-item" href="{% url 'amu_bachelor_thesis:home' %}">
@@ -28,31 +29,44 @@
     </div>
     <div class="navbar-end">
         <div class="navbar-end">
-            <div class="navbar-item">
-                {% if user.is_authenticated %}
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link">{{ user }}</a>
-                        <div class="navbar-dropdown is-right">
-                            {% if user.is_student %}
-                                <a class="navbar-item" href="{% url 'amu_bachelor_thesis:student_profile' user.id %}">Profil</a>
-                            {% elif user.is_lecturer %}
-                                <a class="navbar-item" href="{% url 'amu_bachelor_thesis:lecturer_profile' user.id %}">Profil</a>
-                                <a class="navbar-item" href="{% url 'amu_bachelor_thesis:manage_thesis' %}">Zarządzanie tematami</a>
-                            {% endif %}
-                            <hr class="navbar-divider">
-                            <a class="navbar-item" href="{% url 'amu_bachelor_thesis:logout' %}">
-                                Wyloguj się
-                            </a>
-                        </div>
+            {% if user.is_authenticated %}
+                {% has_notifications user as show_notification_dot %}
+                <a href="{% url 'amu_bachelor_thesis:notifications' %}" id="big-notification-dot-container" class="navbar-item {% if show_notification_dot %}hidden{% endif %}">
+                    <div class="notification-dot big">
+                        {% get_number_of_notifications user %}
                     </div>
-                {% else %}
+                </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">{{ user }}</a>
+                    <div class="navbar-dropdown is-right">
+                        {% if user.is_student %}
+                            <a class="navbar-item" href="{% url 'amu_bachelor_thesis:student_profile' user.id %}">Profil</a>
+                        {% elif user.is_lecturer %}
+                            <a class="navbar-item" href="{% url 'amu_bachelor_thesis:lecturer_profile' user.id %}">Profil</a>
+                            <a class="navbar-item" href="{% url 'amu_bachelor_thesis:manage_thesis' %}">Zarządzanie tematami</a>
+                        {% endif %}
+                        <a class="navbar-item" href="{% url 'amu_bachelor_thesis:notifications' %}">
+                            <span>Powiadomienia</span>
+                            <div id="small-notification-dot" class="notification-dot small {% if show_notification_dot %}hidden{% endif %}">
+                                {% get_number_of_notifications user %}
+                            </div>
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item" href="{% url 'amu_bachelor_thesis:logout' %}">
+                            Wyloguj się
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="navbar-item">
                     <div class="buttons">
                         <a class="button is-primary" href="{% url 'amu_bachelor_thesis:login' %}">
                             Zaloguj się
                         </a>
                     </div>
-                {% endif %}
-            </div>
+                </div>
+            {% endif %}
+
         </div>
     </div>
 </nav>

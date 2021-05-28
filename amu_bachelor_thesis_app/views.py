@@ -1,21 +1,21 @@
 from django.db.models.functions import Concat
 from django.db.models import Value
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.urls import reverse
 from django.template import loader, RequestContext
-from .models import User, Student, Lecturer, Thesis, ThesisProposition
+from .models import User, Student, Lecturer, Thesis, ThesisProposition, Notification
 from django.utils import timezone
-from django.utils.http import urlencode
+from .notification_helper import NotificationHelper
 
 
 def login_redirect(request):
     if not request.user.is_authenticated:
         return HttpResponse('Unauthorized', status=401)
     if request.user.role == User.SUPERUSER:
-        return HttpResponseRedirect(reverse('admin:index'))
-    return HttpResponseRedirect(reverse('amu_bachelor_thesis:home'))
+        return HttpResponseRedirect(reverse('amu_bachelor_thesis:home'))
+    return HttpResponseRedirect(reverse('amu_bachelor_thesis:search_engine'))
 
 
 class StudentProfile(generic.DetailView):
@@ -98,6 +98,8 @@ def edit_thesis(request, thesis_id):
         thesis.description = description
         thesis.edited_at = timezone.now()
         thesis.save()
+        if thesis.student:
+            NotificationHelper.send_lecturer_edited_thesis_notification(thesis)
         return HttpResponseRedirect(reverse('amu_bachelor_thesis:manage_thesis'))
     else:
         return HttpResponse('Method not allowed', status=405)
@@ -133,13 +135,18 @@ def select_thesis(request, thesis_id):
     request.user.student.discard_all_propositions()
     thesis.student = request.user.student
     thesis.save()
+    NotificationHelper.send_student_selected_thesis_notification(thesis)
     return HttpResponseRedirect(reverse('amu_bachelor_thesis:thesis', args=(thesis_id,)))
 
 
 def unselect_thesis(request, thesis_id):
     thesis = get_object_or_404(Thesis, pk=thesis_id)
+    student = thesis.student
+    if thesis.student is None:
+        return HttpResponse('Thesis is not selected by any student', status=401)
     thesis.student = None
     thesis.save()
+    NotificationHelper.send_student_unselected_thesis_notification(student, thesis)
     return HttpResponseRedirect(reverse('amu_bachelor_thesis:thesis', args=(thesis_id,)))
 
 
@@ -180,6 +187,7 @@ def create_thesis_proposition(request):
         new_thesis_proposition = ThesisProposition(title=title, description=description, created_at=timezone.now(),
                                                    lecturer=lecturer, student=request.user.student, is_active=True)
         new_thesis_proposition.save()
+        NotificationHelper.send_student_created_proposition_notification(new_thesis_proposition)
         return HttpResponseRedirect(reverse('amu_bachelor_thesis:manage_thesis_propositions'))
     else:
         return HttpResponse('Method not allowed', status=405)
@@ -203,6 +211,8 @@ def edit_thesis_proposition(request, thesis_proposition_id):
         thesis_proposition.description = description
         thesis_proposition.edited_at = timezone.now()
         thesis_proposition.save()
+        if thesis_proposition.is_active:
+            NotificationHelper.send_student_edited_proposition_notification(thesis_proposition)
         return HttpResponseRedirect(reverse('amu_bachelor_thesis:manage_thesis_propositions'))
     else:
         return HttpResponse('Method not allowed', status=405)
@@ -234,6 +244,7 @@ def lecturer_accept_thesis_proposition(request, thesis_proposition_id):
     thesis.save()
     thesis_proposition.delete()
     student.discard_all_propositions()
+    NotificationHelper.send_lecturer_accepted_proposition_notification(thesis)
     return HttpResponseRedirect(reverse('amu_bachelor_thesis:lecturer_manage_thesis_propositions'))
 
 
@@ -241,6 +252,7 @@ def lecturer_discard_thesis_proposition(request, thesis_proposition_id):
     thesis_proposition = get_object_or_404(ThesisProposition, pk=thesis_proposition_id)
     thesis_proposition.is_active = False
     thesis_proposition.save()
+    NotificationHelper.send_lecturer_discarded_proposition_notification(thesis_proposition)
     return HttpResponseRedirect(reverse('amu_bachelor_thesis:lecturer_manage_thesis_propositions'))
 
 
@@ -248,13 +260,43 @@ def student_discard_own_thesis_proposition(request, thesis_proposition_id):
     thesis_proposition = get_object_or_404(ThesisProposition, pk=thesis_proposition_id)
     thesis_proposition.is_active = False
     thesis_proposition.save()
+    NotificationHelper.send_student_discard_proposition_notification(thesis_proposition)
     return HttpResponseRedirect(reverse('amu_bachelor_thesis:manage_thesis_propositions'))
 
 
 def student_resend_own_thesis_proposition(request, thesis_proposition_id):
     thesis_proposition = get_object_or_404(ThesisProposition, pk=thesis_proposition_id)
-    if request.student.has_thesis():
+    if request.user.student.has_thesis():
         return HttpResponse("Student has thesis", 401)
     thesis_proposition.is_active = True
     thesis_proposition.save()
+    NotificationHelper.send_student_created_proposition_notification(thesis_proposition)
     return HttpResponseRedirect(reverse('amu_bachelor_thesis:manage_thesis_propositions'))
+
+
+class NotificationsView(generic.ListView):
+    model = Notification
+    template_name = 'amu_bachelor_thesis_app/notification/notifications.html'
+    context_object_name = 'notifications'
+
+    def get_queryset(self):
+        notifications = Notification.objects.filter(recipient=self.request.user, is_seen=False).order_by('-date')
+        for notification in notifications:
+            notification.is_seen = True
+            notification.save()
+        return notifications
+
+
+class NotificationsHistoryView(generic.ListView):
+    model = Notification
+    template_name = 'amu_bachelor_thesis_app/notification/notifications-history.html'
+    context_object_name = 'notifications'
+    paginate_by = 15
+
+    def get_queryset(self):
+        return Notification.objects.filter(recipient=self.request.user, is_seen=True).order_by('-date')
+
+
+def notifications_get_counter(request):
+    number_of_unread_notifications = Notification.objects.filter(recipient=request.user, is_seen=False).count()
+    return JsonResponse({"unread_notifications": number_of_unread_notifications}, status=200)

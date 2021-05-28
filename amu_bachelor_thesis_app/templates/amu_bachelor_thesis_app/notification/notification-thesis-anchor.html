@@ -1,0 +1,5 @@
+{% if notification.thesis %}
+    <a href="{% url 'amu_bachelor_thesis:thesis' notification.thesis_id %}">
+        {{ notification.thesis.title }}
+    </a>
+{% endif %}
