@@ -11,7 +11,7 @@ def get_value_from_dict(dictionary, key):
 
 @register.simple_tag
 def get_number_of_notifications(user):
-    return user.notification_set.count()
+    return user.notification_set.filter(is_seen=False).count()
 
 
 @register.simple_tag

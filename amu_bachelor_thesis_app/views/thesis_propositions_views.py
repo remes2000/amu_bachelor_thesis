@@ -21,7 +21,7 @@ class ManageThesisPropositions(generic.ListView):
 
 
 @login_required
-@method_decorator(user_passes_test(lambda user: user.is_student()), name='dispatch')
+@user_passes_test(lambda user: user.is_student())
 def create_thesis_proposition(request):
     if request.method == 'GET':
         lecturers = Lecturer.objects.all()

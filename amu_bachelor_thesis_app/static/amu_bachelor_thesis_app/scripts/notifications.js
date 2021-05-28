@@ -9,7 +9,9 @@ async function fetchNotificationCounter() {
         const response = await fetch('/amu_bachelor_thesis/notifications_getcounter');
         const responseBody = await response.json();
         if(responseBody.unread_notifications > currentNumberOfNotifications) {
-            await audio.play();
+            try {
+                await audio.play();
+            } catch (e) {}
         }
         currentNumberOfNotifications = responseBody.unread_notifications;
         smallNotificationDot.innerHTML = currentNumberOfNotifications;
@@ -22,7 +24,7 @@ async function fetchNotificationCounter() {
             bigNotificationDotContainer.classList.remove('hidden');
         }
     } catch (e) {
-        console.log('Wystapił problem podczas pobierania powiadomień')
+        console.log('Wystapił problem podczas pobierania powiadomień', e);
     }
     setupNextFetch();
 }
