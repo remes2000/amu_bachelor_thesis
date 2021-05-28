@@ -52,6 +52,11 @@
                             </div>
                         </a>
                         <hr class="navbar-divider">
+                        {% if user.is_superuser %}
+                            <a class="navbar-item" href="{% url 'admin:index' %}">
+                                Zarządzanie użytkownikami
+                            </a>
+                        {% endif %}
                         <a class="navbar-item" href="{% url 'amu_bachelor_thesis:logout' %}">
                             Wyloguj się
                         </a>

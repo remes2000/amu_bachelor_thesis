@@ -6,7 +6,7 @@
 {% block content %}
     <h2 class="title">{{ lecturer.name_with_degree }}</h2>
     {% if user.is_lecturer and user.lecturer.id == lecturer.id %}
-        <a class="button is-button is-primary" href="{% url 'amu_bachelor_thesis:edit_lecturer' lecturer.user_id %}">
+        <a class="button is-button is-primary" href="{% url 'amu_bachelor_thesis:edit_lecturer' %}">
             Edytuj profil
         </a>
     {% endif %}
