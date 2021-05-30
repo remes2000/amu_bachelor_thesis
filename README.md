@@ -14,5 +14,8 @@ Startup:
 > 
 > python manage.py runserver
 
+Add first user:
+> python manage.py createsuperuser
+
 Tests:
 > python manage.py test
